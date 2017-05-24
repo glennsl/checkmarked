@@ -1,0 +1,32 @@
+{
+  "name": "md-codecheck",
+  "version": "0.1.0",
+  "description": "Extracts code blocks from markdown files, then runs checks based on language",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world",
+    "test": "npm run -s build && node lib/js/src/main test_data/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glennsl/md-codecheck.git"
+  },
+  "keywords": [
+    "markdown",
+    "code",
+    "check"
+  ],
+  "author": "glennsl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glennsl/md-codecheck/issues"
+  },
+  "homepage": "https://github.com/glennsl/md-codecheck#readme",
+  "dependencies": {
+    "bs-node": "buckletypes/bs-node",
+    "bs-platform": "bloomberg/bucklescript",
+    "marked": "^0.3.6",
+    "minimist": "^1.2.0"
+  }
+}
