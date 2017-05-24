@@ -28,5 +28,6 @@
     "bs-platform": "bloomberg/bucklescript",
     "marked": "^0.3.6",
     "minimist": "^1.2.0"
-  }
+  },
+  "bin": "scripts/runner.js"
 }
