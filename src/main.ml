@@ -1,6 +1,6 @@
 
 let out_dir = "__mdcc__"
-let tmp_dir = Node.Path.join [|out_dir; "tmp"|]
+let config = Config.read ()
 
 let rec ensureDirExists path =
   let dir = Node.Path.dirname path in
@@ -13,20 +13,30 @@ let writeFile filename content =
   ensureDirExists filename;
   Node.Fs.writeFileSync ~filename:filename ~text:content
 
-let checkWithBsc file =
-  let ml_path = Node.Path.join [|".."; file|] in
-  let js_path = (Node.Path.basename file) ^ ".js" in
-  let cmd = {j|../../node_modules/bs-platform/bin/bsc.exe -color always -c -o $js_path $ml_path|j} in
-  (*print_endline @@ tmp_dir ^ " : " ^ cmd;*)
-  let _ : string = Node.ChildProcess.execSync cmd (Node.Options.options ~cwd:tmp_dir ()) in
-  print_endline "done"
-
-let checkExtracted filename = function
-| "ml" -> checkWithBsc filename
-| lang -> print_endline @@ "Unrecognized language: " ^ lang
+let checkCode filename lang =
+  match Js.Dict.get Config.(config.rules) lang with
+  | Some rule ->
+    rule.tasks
+    |> Array.iter (fun task_spec ->
+      match Js.Dict.get config.tasks task_spec.Config.name with
+      | Some task ->
+        let cmd = task.command |> Js.String.replaceByRe [%re {|/\$\(file\)/|}] filename in
+        let cmd =
+          match task_spec.arguments with
+          | Some args ->
+            cmd |> Js.String.replaceByRe [%re {|/\$\(args\)/|}] args
+          | None -> cmd
+          in
+        Js.log cmd;
+        let _ : string = Node.ChildProcess.execSync cmd (Node.Options.options ~cwd:"__mdcc__" ()) in
+        print_endline "done"
+      | None ->
+        print_endline ("Task not found: " ^ task_spec.name)
+    )
+  | None -> print_endline ("Unrecognized language: " ^ lang)
 
 let checkFile path =
-  print_endline @@ "Parsing " ^ path ^ "... ";
+  print_endline {j|Parsing $path... |j};
   Node.Fs.readFileAsUtf8Sync path
   |> Extract.extract
   |> Array.to_list
@@ -36,21 +46,14 @@ let checkFile path =
       let target_path = Node.Path.join [|out_dir; target_file|] in
       writeFile target_path content;
       print_string @@ "Checking " ^ target_file ^ "... ";
-      checkExtracted target_file lang
+      checkCode target_file lang
     end;
   );
   print_endline ""
 
-let args =
-  Node.Process.argv
-  |> Js.Array.sliceFrom 2
-  |> Minimist.parseArgs
-
-let files = Minimist.orphans args
-
-let _ = begin
-  ensureDirExists (Node.Path.join [|tmp_dir; "dummy"|]);
-  files
+let _ =
+  config.sources
   |> Array.to_list
-  |> List.map checkFile;
-end
+  |> List.map (fun pattern -> pattern |> Glob.sync |> Array.to_list)
+  |> List.flatten
+  |> List.map checkFile

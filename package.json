@@ -6,7 +6,7 @@
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
-    "test": "npm run -s build && node lib/js/src/main test_data/*"
+    "test": "npm run -s build && cd test && node ../lib/js/src/main *.md"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,10 @@
   },
   "homepage": "https://github.com/glennsl/md-codecheck#readme",
   "dependencies": {
+    "bs-json": "buckletypes/bs-json",
     "bs-node": "buckletypes/bs-node",
     "bs-platform": "bloomberg/bucklescript",
+    "glob": "^7.1.2",
     "marked": "^0.3.6",
     "minimist": "^1.2.0"
   },

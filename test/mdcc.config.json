@@ -1,0 +1,22 @@
+{
+  "tasks": {
+    "bsc": {
+      "command": "../../node_modules/bs-platform/bin/bsc.exe $(args) -color always -i $(file)"
+    }
+  },
+  "sources": [
+    "**/*.md"
+  ],
+  "rules": {
+    "ml": {
+      "tasks": [{
+        "name": "bsc",
+        "arguments": "-I bs-json"
+      }]
+    },
+    "js": {
+      "language": "js",
+      "tasks": ["js"]
+    }
+  }
+}

@@ -5,6 +5,6 @@
 let c = 3 + 4
 ```
 
-```ml
+```ml.
 Syntax error
 ```
