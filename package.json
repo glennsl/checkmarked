@@ -24,10 +24,10 @@
   },
   "homepage": "https://github.com/glennsl/md-codecheck#readme",
   "dependencies": {
+    "bs-glob": "buckletypes/bs-glob",
     "bs-json": "buckletypes/bs-json",
     "bs-node": "buckletypes/bs-node",
     "bs-platform": "bloomberg/bucklescript",
-    "glob": "^7.1.2",
     "marked": "^0.3.6",
     "minimist": "^1.2.0"
   },
