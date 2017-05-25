@@ -17,7 +17,7 @@ let checkCode filename lang =
   match Js.Dict.get Config.(config.rules) lang with
   | Some rule ->
     rule.tasks
-    |> Array.iter (fun task_spec ->
+    |> List.iter (fun task_spec ->
       match Js.Dict.get config.tasks task_spec.Config.name with
       | Some task ->
         let cmd = task.command |> Js.String.replaceByRe [%re {|/\$\(file\)/|}] filename in
@@ -53,7 +53,6 @@ let checkFile path =
 
 let _ =
   config.sources
-  |> Array.to_list
   |> List.map (fun pattern -> pattern |> Glob.sync |> Array.to_list)
   |> List.flatten
   |> List.map checkFile

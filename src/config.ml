@@ -1,8 +1,4 @@
 
-let either a b json =
-  try a json with
-  | _ -> b json
-
 let filename = "mdcc.config.json"
 
 type task = {
@@ -13,11 +9,11 @@ and task_spec = {
   arguments: string option
 }
 and rule = {
-  tasks: task_spec array
+  tasks: task_spec list
 }
 and config = {
   tasks: task Js.Dict.t;
-  sources: string array;
+  sources: string list;
   rules: rule Js.Dict.t
 }
 
@@ -31,18 +27,18 @@ module Decode = struct
     arguments = json |> optional (field "arguments" string)
   }
 
-  let string_as_task_spec json = Json.Decode.{
+  let string_to_task_spec json = Json.Decode.{
     name = json |> string;
     arguments = None
   }
 
   let rule json = Json.Decode.{
-    tasks = json |> field "tasks" (array (either task_spec string_as_task_spec))
+    tasks = json |> field "tasks" (list (either task_spec string_to_task_spec))
   }
 
   let config json = Json.Decode.{
     tasks = json |> field "tasks" (dict task);
-    sources = json |> field "sources" (array string);
+    sources = json |> field "sources" (list string);
     rules = json |> field "rules" (dict rule)
   }
 end
