@@ -1,7 +1,7 @@
 {
   "tasks": {
     "bsc": {
-      "command": "../../node_modules/bs-platform/bin/bsc.exe $(args) -color always -i $(file)"
+      "command": "bsc $(args) -color always -i $(file)"
     }
   },
   "sources": [
