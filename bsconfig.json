@@ -1,5 +1,6 @@
 {
   "name": "md-codecheck",
   "sources": ["src"],
-  "bs-dependencies": ["bs-node", "bs-json", "bs-glob"]
+  "bs-dependencies": ["bs-node", "bs-json", "bs-glob"],
+  "bsc-flags": ["-bs-no-version-header"]
 }
