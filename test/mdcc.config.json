@@ -2,6 +2,9 @@
   "tasks": {
     "bsc": {
       "command": "bsc $(args) -color always -i $(file)"
+    },
+    "js": {
+      "command": "acorn $(file)"
     }
   },
   "sources": [
