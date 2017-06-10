@@ -1,5 +1,5 @@
 
-let out_dir = "__mdcc__"
+let out_dir = "__checkmarked__"
 let config = Config.read ()
 
 let rec ensureDirExists path =
@@ -28,7 +28,7 @@ let checkCode filename lang =
           | None -> cmd
           in
         Js.log cmd;
-        let _ : string = Node.ChildProcess.execSync cmd (Node.Options.options ~cwd:"__mdcc__" ()) in
+        let _ : string = Node.ChildProcess.execSync cmd (Node.Options.options ~cwd:out_dir ()) in
         print_endline "done"
       | None ->
         print_endline ("Task not found: " ^ task_spec.name)

@@ -1,5 +1,5 @@
 
-let filename = "mdcc.config.json"
+let filename = "checkmarked.config.json"
 
 type task = {
   command: string

@@ -1,5 +1,5 @@
 {
-  "name": "md-codecheck",
+  "name": "checkmarked",
   "version": "0.1.0",
   "description": "Extracts code blocks from markdown files, then runs checks based on language",
   "scripts": {
@@ -10,19 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glennsl/md-codecheck.git"
+    "url": "git+https://github.com/glennsl/checkmarked.git"
   },
   "keywords": [
     "markdown",
-    "code",
+    "code block",
     "check"
   ],
   "author": "glennsl",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/glennsl/md-codecheck/issues"
+    "url": "https://github.com/glennsl/checkmarked/issues"
   },
-  "homepage": "https://github.com/glennsl/md-codecheck#readme",
+  "homepage": "https://github.com/glennsl/checkmarked#readme",
   "dependencies": {
     "acorn": "^4.0.13",
     "bs-glob": "buckletypes/bs-glob",
