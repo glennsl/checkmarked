@@ -1,6 +1,6 @@
 {
   "name": "checkmarked",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Extracts code blocks from markdown files, then runs checks based on language",
   "scripts": {
     "build": "bsb -make-world",
