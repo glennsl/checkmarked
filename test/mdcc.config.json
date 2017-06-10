@@ -3,6 +3,9 @@
     "bsc": {
       "command": "bsc $(args) -color always -i $(file)"
     },
+    "bsc+reason": {
+      "command": "bsc -pp \"../../node_modules/bs-platform/bin/refmt.exe --print binary\" $(args) -color always -i $(file)"
+    },
     "js": {
       "command": "acorn $(file)"
     }
@@ -14,6 +17,12 @@
     "ml": {
       "tasks": [{
         "name": "bsc",
+        "arguments": "-I bs-json"
+      }]
+    },
+    "re": {
+      "tasks": [{
+        "name": "bsc+reason",
         "arguments": "-I bs-json"
       }]
     },
