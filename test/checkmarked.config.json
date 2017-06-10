@@ -4,7 +4,7 @@
       "command": "bsc $(args) -color always -i $(file)"
     },
     "bsc+reason": {
-      "command": "bsc -pp \"../../node_modules/bs-platform/bin/refmt.exe --print binary\" $(args) -color always -i $(file)"
+      "command": "bsc -pp \"../../node_modules/bs-platform/bin/refmt.exe --print binary\" $(args) -color always -i -impl $(file)"
     },
     "js": {
       "command": "acorn $(file)"
