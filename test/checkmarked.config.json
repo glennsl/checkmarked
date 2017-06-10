@@ -20,7 +20,8 @@
         "arguments": "-I bs-json"
       }]
     },
-    "re": {
+    "reason": {
+      "extension": "re",
       "tasks": [{
         "name": "bsc+reason",
         "arguments": "-I bs-json"

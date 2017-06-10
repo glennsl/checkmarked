@@ -10,12 +10,14 @@ let rec ensureDirExists path =
   end
 
 let writeFile filename content =
-  ensureDirExists filename;
-  Node.Fs.writeFileSync ~filename:filename ~text:content
+  let path = Node.Path.join [| out_dir; filename |] in
+  ensureDirExists path;
+  Node.Fs.writeFileSync ~filename:path ~text:content
 
-let checkCode filename lang =
-  match Js.Dict.get Config.(config.rules) lang with
-  | Some rule ->
+let ruleFor lang =
+  Js.Dict.get Config.(config.rules) lang
+
+let checkCode filename (rule: Config.rule) =
     rule.tasks
     |> List.iter (fun task_spec ->
       match Js.Dict.get config.tasks task_spec.Config.name with
@@ -33,21 +35,24 @@ let checkCode filename lang =
       | None ->
         print_endline ("Task not found: " ^ task_spec.name)
     )
-  | None -> print_endline ("Unrecognized language: " ^ lang)
 
 let checkFile path =
   print_endline {j|Parsing $path... |j};
   Node.Fs.readFileAsUtf8Sync path
   |> Extract.extract
   |> Array.to_list
-  |> List.iteri (fun i (lang, content) -> begin
-      let i = string_of_int i in
-      let target_file = {j|$path.$i.$lang|j} in
-      let target_path = Node.Path.join [|out_dir; target_file|] in
-      writeFile target_path content;
+  |> List.iteri (fun i (lang, content) ->
+    match ruleFor lang with
+    | Some rule ->
+      let extension = Js.Option.(rule.extension |> default lang) in
+      let target_file = {j|$path.$i.$extension|j} in
+
+      writeFile target_file content;
+
       print_string @@ "Checking " ^ target_file ^ "... ";
-      checkCode target_file lang
-    end;
+      checkCode target_file rule
+
+    | None -> print_endline ("No rule for language: " ^ lang)
   );
   print_endline ""
 

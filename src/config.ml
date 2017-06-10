@@ -9,7 +9,8 @@ and task_spec = {
   arguments: string option
 }
 and rule = {
-  tasks: task_spec list
+  tasks: task_spec list;
+  extension: string option
 }
 and config = {
   tasks: task Js.Dict.t;
@@ -23,23 +24,24 @@ module Decode = struct
   }
   
   let task_spec json = Json.Decode.{
-    name = json |> field "name" string;
+    name      = json |> field "name" string;
     arguments = json |> optional (field "arguments" string)
   }
 
   let string_to_task_spec json = Json.Decode.{
-    name = json |> string;
+    name      = json |> string;
     arguments = None
   }
 
   let rule json = Json.Decode.{
-    tasks = json |> field "tasks" (list (either task_spec string_to_task_spec))
+    tasks     = json |> field "tasks" (list (either task_spec string_to_task_spec));
+    extension = json |> optional (field "extension" string)
   }
 
   let config json = Json.Decode.{
-    tasks = json |> field "tasks" (dict task);
+    tasks   = json |> field "tasks" (dict task);
     sources = json |> field "sources" (list string);
-    rules = json |> field "rules" (dict rule)
+    rules   = json |> field "rules" (dict rule)
   }
 end
 
