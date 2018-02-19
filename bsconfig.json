@@ -1,6 +1,6 @@
 {
   "name": "checkmarked",
   "sources": ["src"],
-  "bs-dependencies": ["bs-node", "bs-json", "bs-glob"],
+  "bs-dependencies": ["bs-node", "@glennsl/bs-json", "bs-glob"],
   "bsc-flags": ["-bs-no-version-header"]
 }
