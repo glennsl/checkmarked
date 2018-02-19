@@ -24,13 +24,15 @@
   },
   "homepage": "https://github.com/glennsl/checkmarked#readme",
   "dependencies": {
+    "@glennsl/bs-json": "^1.1.2",
     "acorn": "^4.0.13",
     "bs-glob": "reasonml-community/bs-glob",
-    "bs-json": "reasonml-community/bs-json",
     "bs-node": "reasonml-community/bs-node",
-    "bs-platform": "bucklescript/bucklescript",
     "marked": "^0.3.6",
     "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "bs-platform": "^2.2.0"
   },
   "bin": "scripts/runner.js"
 }
