@@ -3,16 +3,16 @@ let out_dir = "__checkmarked__"
 let config = Config.read ()
 
 let rec ensureDirExists path =
-  let dir = Node.Path.dirname path in
-  if not @@ Node.Fs.existsSync dir then begin
+  let dir = BsNode.Node.Path.dirname path in
+  if not @@ BsNode.Node.Fs.existsSync dir then begin
     ensureDirExists dir;
-    Node.Fs.mkdirSync dir
+    BsNode.Node.Fs.mkdirSync dir
   end
 
 let writeFile filename content =
-  let path = Node.Path.join [| out_dir; filename |] in
+  let path = BsNode.Node.Path.join [| out_dir; filename |] in
   ensureDirExists path;
-  Node.Fs.writeFileSync ~filename:path ~text:content
+  BsNode.Node.Fs.writeFileSync ~filename:path ~text:content
 
 let ruleFor lang =
   Js.Dict.get Config.(config.rules) lang
@@ -30,7 +30,7 @@ let checkCode filename (rule: Config.rule) =
           | None -> cmd
           in
         Js.log cmd;
-        let _ : string = Node.ChildProcess.execSync cmd (Node.Options.options ~cwd:out_dir ()) in
+        let _ : string = BsNode.Node.ChildProcess.execSync cmd (BsNode.Node.Options.options ~cwd:out_dir ()) in
         print_endline "done"
       | None ->
         print_endline ("Task not found: " ^ task_spec.name)
@@ -38,13 +38,13 @@ let checkCode filename (rule: Config.rule) =
 
 let checkFile path =
   print_endline {j|Parsing $path... |j};
-  Node.Fs.readFileAsUtf8Sync path
+  BsNode.Node.Fs.readFileAsUtf8Sync path
   |> Extract.extract
   |> Array.to_list
   |> List.iteri (fun i (lang, content) ->
     match ruleFor lang with
     | Some rule ->
-      let extension = Js.Option.(rule.extension |> default lang) in
+      let extension = Js.Option.(rule.extension |> getWithDefault lang) in
       let target_file = {j|$path.$i.$extension|j} in
 
       writeFile target_file content;
